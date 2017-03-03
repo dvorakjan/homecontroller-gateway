@@ -1,0 +1,17 @@
+{
+  "name": "homecontroller-gateway",
+  "version": "0.0.1",
+  "description": "Gateway node of HomeController home automation platform.",
+  "main": "src/server.js",
+  "author": {
+    "name": "Jan Dvorak",
+    "email": "dvorakj@gmail.com"
+  },
+  "scripts": {
+    "start": "nodemon -L src/server.js"
+  },
+  "dependencies":  {
+    "util": "0.10.3",
+    "i2c": "^0.2.3"
+  }
+}

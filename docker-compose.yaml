@@ -1,0 +1,14 @@
+homebridge:
+  build: ./homebridge
+  ports:
+    - "51826:51826"
+  net: host
+  volumes:
+    - ./homebridge/config.json:/root/.homebridge/config.json
+    - ./homebridge/plugins.txt:/root/.homebridge/plugins.txt
+hello-node:
+  build: ./gateway
+  volumes:
+    - "./gateway/src:/app/src"
+  ports:
+    - "80:3000"

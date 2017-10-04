@@ -5,13 +5,14 @@
   "main": "src/server.js",
   "author": {
     "name": "Jan Dvorak",
-    "email": "dvorakj@gmail.com"
+    "email": "dvorakj@gmail.com" 
   },
   "scripts": {
     "start": "nodemon -L src/server.js"
   },
   "dependencies":  {
     "util": "0.10.3",
-    "i2c": "^0.2.3"
+    "i2c": "^0.2.3",
+    "left-pad": "1.1.3"
   }
 }

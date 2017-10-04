@@ -7,7 +7,7 @@ build:
 # Target to build and run and subsequently remove image
 run: build
 	docker run --net=host --rm \
-		-p "localhost:51826:51826"
+		-p "localhost:51826:51826" \
 		-v "$(shell pwd)/config.json:/root/.homebridge/config.json" \
 		-v "$(shell pwd)/plugins.txt:/root/.homebridge/plugins.txt" \
 		rpi-homebridge-dev
@@ -15,7 +15,7 @@ run: build
 # Target to drop into an interractive shell
 shell: build
 	docker run --net=host --rm \
-		-p "localhost:51826:51826"
+		-p "localhost:51826:51826" \
 		-v "$(shell pwd)/config.json:/root/.homebridge/config.json" \
 		-v "$(shell pwd)/plugins.txt:/root/.homebridge/plugins.txt" \
 		-it rpi-homebridge-dev bash

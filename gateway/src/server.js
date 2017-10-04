@@ -2,10 +2,9 @@ var util = require('util');
 var i2c  = require('i2c');
 var http = require('http');
 var leftPad = require('left-pad');
-
+ 
 var port    = process.env.port    || 3000;
 var address = process.env.address || 0x4;
-
 
 var i2cDevice = new i2c(address, {device: '/dev/i2c-1', debug: false});
 console.log('I2C bus started on address '+address+' ...')

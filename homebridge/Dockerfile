@@ -1,39 +1,48 @@
-FROM hypriot/rpi-node:7
-# FROM hypriot/rpi-node:6.9.1
+FROM hypriot/rpi-node:8
 MAINTAINER ViViDboarder <vividboarder@gmail.com>
+
+# RUN [ "cross-build-start" ]
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update && \
+        apt-get install -y --no-install-recommends \
         avahi-daemon \
         avahi-discover \
         build-essential \
+        iputils-ping \
         libavahi-compat-libdnssd-dev \
         libnss-mdns && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN npm install -g --unsafe-perm \
-        homebridge \
-        hap-nodejs \
-        node-gyp && \
-    cd /usr/local/lib/node_modules/homebridge/ && \
-    npm install --unsafe-perm bignum && \
-    cd /usr/local/lib/node_modules/hap-nodejs/node_modules/mdns && \
-    node-gyp BUILDTYPE=Release rebuild
-
-EXPOSE 5353 51826
+RUN apt-get install -y locales && locale-gen en_US.UTF-8
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US.UTF-8' LC_ALL='en_US.UTF-8'
 
 RUN mkdir -p /var/run/dbus/
 
-USER root
+# Can't run as non-root yet because avahi needs to be started by root
+# RUN useradd -ms /bin/bash -d /homebridge homebridge
+# USER homebridge
 
-RUN mkdir -p /root/.homebridge
-VOLUME /root/.homebridge
-WORKDIR /root/.homebridge
+RUN mkdir -p /$HOME/.homebridge
+VOLUME /$HOME/.homebridge
 
-ADD start.sh /root/.homebridge/start.sh
+WORKDIR /homebridge
 
-CMD /root/.homebridge/start.sh
+COPY package.json /homebridge/
+COPY npm-shrinkwrap.json /homebridge/
+RUN [ -s npm-shrinkwrap.json ] || rm npm-shrinkwrap.json
+
+RUN npm install
+
+# RUN [ "cross-build-end" ]
+
+EXPOSE 5353 51826
+
+COPY start.sh /homebridge/
+
+COPY plugins-sample.txt /homebridge/plugins.txt
+
+CMD /homebridge/start.sh

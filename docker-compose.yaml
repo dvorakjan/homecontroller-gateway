@@ -6,11 +6,14 @@ homebridge:
   volumes:
     - ./homebridge/config.json:/root/.homebridge/config.json
     - ./homebridge/plugins.txt:/root/.homebridge/plugins.txt
+    - ./homebridge/control.sh:/root/.homebridge/control.sh
+    - ./homebridge/control.sh:/homebridge/control.sh
 homecontroller-gateway:
   build: ./gateway
   volumes:
     - "./gateway/src:/app/src"
     - "./gateway/package.json:/app/package.json"
+  privileged: true
   ports:
     - "80:3000"
   devices:
